@@ -12,21 +12,17 @@ html,
 body {
 	height: 100%;
 	width: 100%;
-	display: flex;
-	flex-direction: column;
 	background: #f5f5f5;
 }
 
 #header {
 	font-style: normal;
 	color: #181818;
-	height: 80px;
-	max-height: 80px;
+	height: 60px;
 	width: auto;
 	min-width: 100%;
 	text-align: center;
-	padding: 20px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	padding: 10px;
 }
 
 #main {
@@ -35,7 +31,7 @@ body {
 	flex: 1;
 	justify-content: center; /* vetical alignment */
 	align-items: center; /* horizontal alignment */
-	height: calc(100% - (80px + 30px));
+	height: 800px;
 	padding: 20px;
 }
 
@@ -43,13 +39,11 @@ body {
 	font-size: small;
 	font-weight: 300;
 	color: #1e1e1e;
-	height: 30px;
-	max-height: 30px;
+	height: 20px;
 	width: auto;
 	min-width: 100%;
 	padding: 5px;
 	text-align: center;
-	box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .container {
@@ -63,8 +57,7 @@ body {
 }
 
 #canvas {
-	border: 1px solid #1e1e1e;
-	margin-right: 20px;
+	border: 2px solid #1e1e1e;
 }
 
 .controls {

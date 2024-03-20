@@ -1,0 +1,32 @@
+{
+	"name": "a-maze-ing",
+	"version": "0.0.1",
+	"description": "Maze Solving Algorithm Visualizer",
+	"main": "mazeSolver.js",
+	"scripts": {
+		"run": "python -m http.server 8081",
+		"watch": "./node_modules/.bin/tsc -w mazeSolver.ts"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/priyakdey/a-maze-ing.git"
+	},
+	"keywords": [
+		"javascript",
+		"typescript",
+		"html",
+		"css",
+		"dfs",
+		"graph",
+		"backtracking"
+	],
+	"author": "Priyak Dey",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/priyakdey/a-maze-ing/issues"
+	},
+	"homepage": "https://github.com/priyakdey/a-maze-ing#readme",
+	"devDependencies": {
+		"typescript": "^5.4.2"
+	}
+}

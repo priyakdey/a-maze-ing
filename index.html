@@ -13,16 +13,28 @@
 			content="html5, canvas, game loop, javascript, maze, algorithm, graph, dfs, depth first search, backtracking"
 		/>
 		<link rel="stylesheet" href="./styles.css" />
-		<script type="module" src="./mazeSolver.js" defer></script>
+		<script src="./mazeSolver.js" defer></script>
 	</head>
 	<body>
 		<header id="header">
 			<h1>Maze Solving Visualizer</h1>
 		</header>
-		<div class="container">
-			<canvas id="canvas" height="800" width="800"></canvas>
-			<button id="start-game-btn" type="submit">Start</button>
-		</div>
+		<main id="main">
+			<div class="container">
+				<canvas id="canvas" height="900" width="900"></canvas>
+				<div class="controls">
+					<div class="select">
+						<label for="choice">Choose grid for:</label>
+						<select name="select-grid" id="select-grid">
+							<option value="starting" selected>Starting</option>
+							<option value="destination">Destination</option>
+							<option value="obstacles">Obstacles</option>
+						</select>
+					</div>
+					<button id="start-game-btn" type="submit">Start</button>
+				</div>
+			</div>
+		</main>
 		<footer id="footer">
 			<p><a href="https://priyakdey.com">Priyak Dey</a> &copy; 2024</p>
 		</footer>

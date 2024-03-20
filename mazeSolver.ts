@@ -1,6 +1,7 @@
 const canvas = document.getElementById("canvas") as HTMLCanvasElement | null;
 const selectElement = document.getElementById("select-grid") as HTMLSelectElement | null;
-if (canvas === null || selectElement === null) {
+const startGameElement = document.getElementById("start-game-btn") as HTMLButtonElement | null;
+if (canvas === null || selectElement === null || startGameElement === null) {
   throw new Error("Required DOM elements not found");
 }
 
@@ -20,6 +21,7 @@ enum Color {
   LIGHT_BLACK = "#1e1e1e",
   LIGHT_GREEN = "#00bb00",
   LIGHT_RED = "#bb0000",
+  LIGHT_BLUE = "#0000bb",
 }
 
 type SelectOption = "starting" | "destination" | "obstacles";
@@ -51,12 +53,18 @@ class Maze {
   start: Position | undefined;
   destination: Position | undefined;
   obstacles: Map<string, Position>;
+  rows: number;
+  cols: number;
+  path: Array<Position>;
+  visited: Set<string>;
 
   constructor() {
-    const rows = Math.floor(CANVAS_HEIGHT / GRID_SIZE);
-    const cols = Math.floor(CANVAS_WIDTH / GRID_SIZE);
-    this.table = Array.from({ length: rows }, () => new Array(cols).fill(Color.LIGHT_WHITE));
+    this.rows = Math.floor(CANVAS_HEIGHT / GRID_SIZE);
+    this.cols = Math.floor(CANVAS_WIDTH / GRID_SIZE);
+    this.table = Array.from({ length: this.rows }, () => new Array(this.cols).fill(Color.LIGHT_WHITE));
     this.obstacles = new Map<string, Position>();
+    this.path = new Array<Position>();
+    this.visited = new Set<string>();
   }
 
   handleClick(event: Event): void {
@@ -132,8 +140,77 @@ class Maze {
     }
   }
 
+  startGame(event: Event): void {
+    if (this.start === undefined || this.destination === undefined) {
+      this.alert();
+      return;
+    }
 
-  paintPosition(position: Position, color: Color) {
+    this.visited.add(this.start.toString());
+    if (this.traverse(this.start!)) {
+      console.log(this.path);
+      return;
+    }
+  }
+
+  traverse(position: Position): boolean {
+    if (position.equals(this.destination)) {
+      this.path.push(position);
+      console.log("Reached");
+      return true;
+    }
+
+    // Mark the current cell as visited
+    this.visited.add(position.toString());
+    this.path.push(position);
+
+    // Visualize the current step
+    const prevColor = this.table[position.y][position.x];
+    if (!position.equals(this.start)) {
+      this.paintPosition(position, Color.LIGHT_BLUE);
+    }
+
+    for (const neighbor of this.getUnvisitedNeighbours(position)) {
+      if (!this.visited.has(neighbor.toString())) {
+        if (this.traverse(neighbor)) {
+          return true;
+        }
+
+        // backtrack
+        this.path.pop();
+        this.paintPosition(position, prevColor);
+      }
+    }
+
+
+
+    return false;
+  }
+
+  getUnvisitedNeighbours(position: Position): Array<Position> {
+    const neighbours: Array<Position> = new Array();
+
+    // directions
+    const directions = [
+      [-1, 0],  // left
+      [1, 0],   // right
+      [0, -1],  // top
+      [0, 1]    // down
+    ];
+
+    for (let [dx, dy] of directions) {
+      const x = position.x + dx;
+      const y = position.y + dy;
+      const neighbour = new Position(x, y);
+      if (x >= 0 && x < this.cols && y >= 0 && y < this.rows && !this.obstacles.has(neighbour.toString())) {
+        neighbours.push(new Position(x, y));
+      }
+    }
+
+    return neighbours;
+  }
+
+  paintPosition(position: Position, color: Color): void {
     const ctx = context!;
     ctx.fillStyle = color;
     ctx.fillRect(
@@ -144,6 +221,10 @@ class Maze {
     );
   }
 
+  alert(): void {
+    alert("select a start and end destination");
+  }
+
 }
 
 
@@ -152,3 +233,4 @@ context!.lineWidth = LINE_WIDTH;
 maze.drawMaze();
 
 canvas.addEventListener("click", maze.handleClick.bind(maze));
+startGameElement.addEventListener("click", maze.startGame.bind(maze));
